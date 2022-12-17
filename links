@@ -1,0 +1,68 @@
+import os
+import shutil
+import webbrowser
+
+def remove_duplicate_lines(file_path):
+  # Read the contents of the file into a list of lines
+  with open(file_path, "r") as file:
+    lines = file.readlines()
+
+  # Remove duplicate lines
+  lines = list(set(lines))
+
+  # Write the lines back to the file
+  with open(file_path, "w") as file:
+    file.writelines(lines)
+
+def separate_codes(file_path, codes):
+  # Read the contents of the file into a list of lines
+  with open(file_path, "r") as file:
+    lines = file.readlines()
+
+  # Create a list of lines that contain any of the codes
+  separated_lines = [line for line in lines if any(code in line for code in codes)]
+
+  # Write the separated lines back to the file
+  with open(file_path, "w") as file:
+    file.writelines(separated_lines)
+
+def save_to_storage(file_path, name, storage_path):
+  # Copy the file to the storage directory
+  new_file_path = os.path.join(storage_path, name)
+  shutil.copy(file_path, new_file_path)
+
+def main():
+  while True:
+    # Prompt the user for input and display options
+    option = input("Enter an option (1-3) or 'q' to quit: \n1. Remove duplicate lines and separate codes \n2. Open tutorial \n3. Quit \n")
+
+    # Perform the chosen action
+    if option == "1":
+      # Prompt the user for the file path
+      file_path = input("Enter the path of the file: ")
+
+      # Prompt the user for the codes to separate
+      codes_str = input("Enter the codes to separate, separated by commas: ")
+      codes = [code.strip() for code in codes_str.split(",")]
+
+      # Remove duplicate lines
+      remove_duplicate_lines(file_path)
+
+      # Separate the lines with the given codes
+      separate_codes(file_path, codes)
+
+      # Prompt the user for the storage path
+      storage_path = input("Enter the path to save the file in storage: ")
+
+      # Save the file to storage with a specified name
+      name = input("Enter a name for the file: ")
+      save_to_storage(file_path, name, storage_path)
+    elif option == "2":
+      # Open the tutorial video in the default web browser
+      webbrowser.open("https://youtu.be/wY70W24lt84", new=2)
+    elif option == "3" or option.lower() == "q":
+      # Quit the program
+      break
+
+if __name__ == "__main__":
+  main()
